@@ -12,7 +12,7 @@
 # Project Live Link
 
 - This project has been deployed to Github pages
-- Link ()
+- Link (https://main--cool-taiyaki-02273c.netlify.app/)
 
 # Instructions
 
