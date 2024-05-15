@@ -9,7 +9,7 @@ const Tabs = () => {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/form" element={<Form />} />
+          <Route path="/" element={<Form />} />
           <Route path="/table" element={<Table />} />
         </Routes>
       </BrowserRouter>

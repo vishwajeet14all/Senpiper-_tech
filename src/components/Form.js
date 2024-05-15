@@ -19,87 +19,91 @@ const Form = () => {
   //On submit, update collection with the new feedback
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrors(validate(feedback));
-    setIsSubmit(true);
+    const formErrors = validate(feedback);
+    setErrors(formErrors);
+    if (Object.keys(formErrors).length === 0) {
+      setFeedbacks([...feedbacks, feedback]);
+      setFeedback({});
+      setIsSubmit(true);
+      setShowSuccess(true);
+    }
   };
 
   useEffect(() => {
-    if (Object.keys(errors).length === 0 && isSubmit) {
-      setFeedbacks([...feedbacks, feedback]);
-      setFeedback({});
+    if (isSubmit) {
       setShowSuccess(true);
+      const form = document.getElementById("main-form");
+      form.reset();
+      setTimeout(() => {
+        setShowSuccess(false);
+        setIsSubmit(false); // Reset isSubmit to allow for new submissions
+      }, 3000); // Corrected to hide success message after 3 seconds
     }
-  }, [errors]);
+  }, [isSubmit]);
 
-  //Show success message and reset form
   const handleContinue = () => {
     var form = document.getElementById("main-form");
     form.reset();
     setShowSuccess(false);
   };
-
   //Update feedback fields on change
-  function handleChange(e) {
+  const handleChange = (e) => {
     setFeedback({ ...feedback, [e.target.name]: e.target.value });
-  }
-
+  };
   //Validate radio inputs
   const validate = (values) => {
     const formErrors = {};
-
     if (!values.hostXp) {
       formErrors.hostXp = "* Please select an option.";
     }
-
     if (!values.beverageXp) {
       formErrors.beverageXp = "* Please select an option.";
     }
-
     if (!values.diningXp) {
       formErrors.diningXp = "* Please select an option.";
     }
-
     if (!values.cleanXp) {
       formErrors.cleanXp = "* Please select an option.";
     }
-
     return formErrors;
   };
 
   //On change of collection(i.e. on submit), save collection to local storage
   useEffect(() => {
-    if (feedbacks.length !== 0)
-      localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+    localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
   }, [feedbacks]);
 
   return (
     <div className="form-container">
       <AnimatePresence exitBeforeEnter>
         {showSuccess && (
-          <motion.div className="success-show"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      transition={{duration:0.25}}>
-        {/* {showSuccess ? "success-show" : "success-hide"} */}
-        <motion.div className="success-msg"
-          initial={{ opacity: 0, y:'-10rem', x:-125 }}
-          animate={{ opacity: 1, y: 0 }}
-        transition={{delay:0.25, duration:0.5}}>
-          <p>Thank you for completing the information.</p>
-          <button className="continue-btn" onClick={handleContinue}>
-            Continue
-          </button>
-        </motion.div>
-      </motion.div>
-      )}
+          <motion.div
+            className="success-show"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <motion.div
+              className="success-msg"
+              initial={{ opacity: 0, y: "-10rem", x: -125 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.5 }}
+            >
+              <p>Thank you for completing the information.</p>
+              <button className="continue-btn" onClick={handleContinue}>
+                Continue
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
-      
 
       <form
         className="form-wrapper"
         id="main-form"
         autoComplete="off"
-        onSubmit={(e) => handleSubmit(e)}
+        onSubmit={handleSubmit}
       >
         <div className="form-column form-left">
           <div className="form-intro">

@@ -8,8 +8,8 @@ export default function Navbar() {
     <div>
       <div className="header">
         <div className="tabs">
-          <div className={location.pathname === "/form" ? "tab active-tab" : "tab"}>
-            <Link className="link" to="/form">Form</Link>
+          <div className={location.pathname === "/" ? "tab active-tab" : "tab"}>
+            <Link className="link" to="/">Form</Link>
           </div>
           <div className={location.pathname === "/table" ? "tab active-tab" : "tab"}>
             <Link className="link" to="/table">Table</Link>

@@ -61,7 +61,6 @@ const Table = () => {
 
   //Get Feedbacks collection from local storage, if it exists
   useEffect(() => {
-    console.log("hello");
     const localFeedbacks = localStorage.getItem("feedbacks");
     if (localFeedbacks) {
       setFeedbacks(JSON.parse(localFeedbacks));
